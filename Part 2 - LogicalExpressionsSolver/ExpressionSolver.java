@@ -4,6 +4,7 @@ import java.util.Stack;
 import static java.lang.System.exit;
 
 interface LogicalExpressionSolver {
+
     /**
      * Function evaluates the expression using the given values of the user
      * @param expression : the expression input by user
@@ -11,6 +12,21 @@ interface LogicalExpressionSolver {
      * @throws InvalidExpression : exception class prints wrong expression error, exit if expression invalid
      */
     boolean evaluateExpression(Expression expression) throws InvalidExpression;
+
+    /**
+     * Function checks if character is an operand
+     * @param c : character to be checked
+     * @return true if it's an operand
+     */
+    boolean isOperand(char c);
+
+    /**
+     * Function calculates 'p implies q'
+     * @param p : first operand
+     * @param q : second operand
+     * @return the result of the implication
+     */
+    boolean implication(boolean p, boolean q);
 }
 public class ExpressionSolver implements LogicalExpressionSolver
 {
@@ -71,10 +87,23 @@ public class ExpressionSolver implements LogicalExpressionSolver
         }
         return operands.peek();
     }
-    boolean isOperand(char c){
+
+    /**
+     * Function checks if character is an operand
+     * @param c : character to be checked
+     * @return true if it's an operand
+     */
+    public boolean isOperand(char c){
         return !(c=='~'||c=='^'||c=='v'||c=='>'||c=='('||c==')');
     }
-    boolean implication(boolean p, boolean q){
+
+    /**
+     * Function calculates 'p implies q'
+     * @param p : first operand
+     * @param q : second operand
+     * @return the result of the implication
+     */
+    public boolean implication(boolean p, boolean q){
         return ((!(p)) || q);
     }
 }
