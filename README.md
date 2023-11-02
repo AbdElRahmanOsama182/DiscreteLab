@@ -82,3 +82,86 @@ powerset.getSubsets(set, 0, 0L);
 ---
 
 # Part 3: Inference Engine
+
+This Java program provides an inference engine for processing logical expressions. The engine is designed to apply various inference rules to logical expressions and generate the corresponding output based on the rules' logic. The supported inference rules include:
+
+1. Modus Ponens
+2. Modus Tollens
+3. Hypothetical Syllogism
+4. Disjunctive Syllogism
+5. Resolution
+
+## **Methods**
+
+The program consists of several Java classes that work together to implement the inference engine:
+
+### **Inference Rules**
+
+The inference rules are implemented as Java classes. Each rule has two main methods:
+
+1. **`matches(Expression exp1, Expression exp2)`**: This method checks if the given expressions match the rule's criteria. If a match is found, the rule is applicable.
+2. **`apply(Expression exp1, Expression exp2)`**: If a match is found, this method generates the result based on the rule's logic and the given expressions.
+
+The implemented inference rules are:
+
+- **`ModusPonensRule`**: Implements the Modus Ponens rule, allowing the inference of "Q" from expressions of the form "P > Q" and "P."
+- **`ModusTollensRule`**: Implements the Modus Tollens rule, allowing the inference of "~P" from expressions of the form "P > Q" and "~Q."
+- **`HypotheticalSyllogismRule`**: Implements the Hypothetical Syllogism rule, allowing the inference of "P > R" from expressions of the form "P > Q" and "Q > R."
+- **`DisjunctiveSyllogismRule`**: Implements the Disjunctive Syllogism rule, allowing the inference of "Q" from expressions of the form "P v Q" and "~P."
+- **`ResolutionRule`**: Implements the Resolution rule, allowing the inference of "Q v R" from expressions of the form "P v Q" and "~P v R."
+
+### **Inference Engine**
+
+The inference engine is responsible for managing the rules and applying them to the expressions. The **`MyInferenceEngine`** class implements the **`InferenceEngine`** interface, which includes the following methods:
+
+1. **`addRule(InferenceRule rule)`**: This method allows you to add inference rules to the engine. Rules are stored in a list for later use.
+    
+    ```java
+    public void addRule(InferenceRule rule) {
+    		rules.add(rule);
+    }
+    ```
+    
+2. **`addExpression(Expression exp)`**: This method is used to add logical expressions to the engine. Expressions are stored in a separate list for processing.
+    
+    ```java
+    public void addExpression(Expression exp) {
+    		expressions.add(exp);
+    }
+    ```
+    
+3. **`applyRules()`**: This method applies the available inference rules to the added expressions and returns the result if a valid inference is found. If no valid inference is possible, it returns **`null`**.
+    
+    ```java
+    public Expression applyRules() {
+        for (Expression exp1 : expressions) {
+            for (Expression exp2 : expressions) {
+                if (exp1 != exp2) {
+                    for (InferenceRule rule : rules) {
+                        if (rule.matches(exp1, exp2)) {
+                            Expression result = rule.apply(exp1, exp2);
+                            expressions.add(result);
+                            return result;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    ```
+    
+
+### **Main Program**
+
+The **`Main`** class serves as the main program that utilizes the inference engine to process logical expressions. It follows these steps:
+
+1. Add the desired inference rules, such as Modus Ponens, Modus Tollens, etc., to the inference engine.
+2. Prompt the user to input two logical expressions.
+3. Add the user's expressions to the inference engine.
+4. Apply the inference rules to determine if a valid inference can be made.
+5. Display the result along with the applied rule, or indicate that the input expressions cannot be inferred if no valid inference is found.
+
+## **Extending the Program**
+
+You can extend the program by adding more custom rules and expressions as needed. The provided code serves as a foundation for building a more comprehensive inference engine for logical expressions.
