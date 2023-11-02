@@ -1,7 +1,8 @@
 import java.util.*;
 
 
-interface MyExpression {
+interface Expression {
+
     /**
      * function returns the postfix of the expression
      * @return the postfix representation of the expression
@@ -18,9 +19,8 @@ interface MyExpression {
      * Function sets the infix and postfix representation of the expression,
      * the postfix representation is needed for easier evaluation process.
      * @param representation : infix representation of the expression
-     * @throws InvalidExpression : if the expression is invalid
      */
-    void setRepresentation(String representation) throws InvalidExpression;
+    void setRepresentation(String representation);
 
     /**
      * Function checks if a character is operator
@@ -45,9 +45,15 @@ interface MyExpression {
      * @return the values of variables, and returns null if the hashmap is empty
      */
     public HashMap<Character, Boolean> getValues();
+
+    /**
+     * Function checks if the user's expression is valid
+     * @return true if valid, false if invalid expression
+     */
+    public boolean validateExpression();
 }
 
-public class Expression implements MyExpression {
+public class MyExpression implements Expression {
     // infix representation
     private String representation;
     // postfix representation
@@ -60,14 +66,13 @@ public class Expression implements MyExpression {
     /**
      * Non-parameterized constructor
      */
-    public Expression(){};
+    public MyExpression(){};
 
     /**
      * Parameterized constructor
      * @param expression : infix expression
-     * @throws InvalidExpression : if the expression is invalid
      */
-    public Expression(String expression) throws InvalidExpression {
+    public MyExpression(String expression) {
         setRepresentation(expression);
     }
 
@@ -100,9 +105,8 @@ public class Expression implements MyExpression {
      * Function sets the infix and postfix representation of the expression,
      * the postfix representation is needed for easier evaluation process.
      * @param representation : infix representation of the expression
-     * @throws InvalidExpression : if the expression is invalid
      */
-    public void setRepresentation(String representation) throws InvalidExpression {
+    public void setRepresentation(String representation) {
         this.representation = representation;
 
         // transform infix representation to postfix
@@ -138,7 +142,7 @@ public class Expression implements MyExpression {
                         if (operators.peek() == '('){
                             break;
                         }
-                        else if (precedence.get(curr) > precedence.get(operators.peek())) {
+                        else if (precedence.get(curr) >= precedence.get(operators.peek())) {
                             break;
                         }
                         postfix = postfix.concat(String.valueOf(operators.pop()));
@@ -155,11 +159,7 @@ public class Expression implements MyExpression {
             }
         }
         while(!operators.empty()){
-            char curr = operators.pop();
-            if (curr == ')' || curr == '('){
-                throw new InvalidExpression();
-            }
-            postfix = postfix.concat(String.valueOf(curr));
+            postfix = postfix.concat(String.valueOf(operators.pop()));
         }
         this.postfix = postfix;
     }
@@ -190,5 +190,75 @@ public class Expression implements MyExpression {
             return null;
         }
         return this.values;
+    }
+
+    /**
+     * Function checks if the user's expression is valid
+     * @return true if valid, false if invalid expression
+     */
+    public boolean validateExpression() {
+        String infix = this.representation;
+        int orig_length = infix.length();
+        char last = infix.charAt(orig_length-1);
+        Stack<Character>brackets = new Stack<>();
+        if(isOperator(last)&&last!=')'){
+            return false;
+        }
+        for (int i = 0; i < orig_length - 1; i++){
+            char curr = infix.charAt(i);
+            if (curr == '('){
+                brackets.push(curr);
+            } else if (curr == ')') {
+                if (brackets.empty())
+                    brackets.push(curr);
+                else if (brackets.peek()=='(')
+                    brackets.pop();
+                else
+                    brackets.push(curr);
+            }
+            else if (isOperator(curr) && isOperator(infix.charAt(i+1)) && infix.charAt(i+1) != '~'){
+                return false;
+            }
+            else if (!isOperator(curr) && !isOperator(infix.charAt(i+1))){
+                return false;
+            }
+        }
+        if (last == '('){
+            brackets.push(last);
+        } else if (last == ')') {
+            if (brackets.empty())
+                brackets.push(last);
+            else if (brackets.peek() == '(')
+                brackets.pop();
+            else
+                brackets.push(last);
+        }
+        if (!brackets.empty()){
+            return false;
+        }
+        String postfix = this.postfix;
+        int length = postfix.length();
+        int operands = 0;
+        for (int i = 0; i < length; i++) {
+            char curr = postfix.charAt(i);
+            if (!isOperator(curr)) {
+                operands++;
+            }
+            else {
+                if (curr == '~'){
+                    if (operands==0)
+                        return false;
+                }
+                else if (curr == ')' || curr == '('){
+                    return false;
+                }
+                else {
+                    if(operands < 2)
+                        return false;
+                    operands--;
+                }
+            }
+        }
+        return operands == 1;
     }
 }

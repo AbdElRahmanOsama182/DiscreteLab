@@ -5,13 +5,20 @@ import java.util.Set;
 import static java.lang.System.exit;
 
 public class Main {
-    public static void main(String[] args) throws InvalidExpression {
+    public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         System.out.print("Write Expression: ");
         // take expression input
         String expr = in.nextLine();
-        Expression my_expression = new Expression(expr);
-        ExpressionSolver solver = new ExpressionSolver();
+        Expression my_expression = new MyExpression(expr);
+
+        // validation:
+        if (!my_expression.validateExpression()) { // invalid
+            System.out.println("\nWrong expression!");
+            exit(1);
+        }
+
+        LogicalExpressionSolver solver = new ExpressionSolver();
 
         // get variables in the expression
         Set<Character> expr_variables = my_expression.getVariables();
@@ -40,7 +47,10 @@ public class Main {
         // set the variables' values in expression
         my_expression.setValues(map);
 
-        System.out.println();
-        System.out.print("Result: " + solver.evaluateExpression(my_expression));
+        // to make sure that the expression is solvable before calling evaluateExpression
+        if (solver.isSolvable(my_expression)) {
+            System.out.println();
+            System.out.print("Result: " + solver.evaluateExpression(my_expression));
+        }
     }
 }
