@@ -4,23 +4,6 @@ interface InferenceRule {
     Expression apply(Expression exp1, Expression exp2);
 }
 
-class InferencedExpression extends MyExpression {
-    private String inferenceRule;
-
-    public InferencedExpression(String expression, String inferenceRule) {
-        super(expression);
-
-    }
-
-    public void setinferenceRule(String inferenceRule) {
-        this.inferenceRule = inferenceRule;
-    }
-
-    public String getinferenceRule() {
-        return this.inferenceRule;
-    }
-}
-
 class ModusPonensRule implements InferenceRule {
     @Override
     public boolean matches(Expression exp1, Expression exp2) {
