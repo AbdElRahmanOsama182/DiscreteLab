@@ -123,6 +123,56 @@ This class implements the **`Expression`** interface and provides methods for ma
     }
     ```
     
+- `**getSplittedExpression()**`: This method returns the array of tokens after splitting the expression.
+    
+    ```java
+    public String[] getSplittedExpression() {
+        return this.splittedExpression;
+    }
+    ```
+    
+- **`splitExpression(String expression)`**: This method returns the array of tokens after splitting the expression.
+    
+    ```java
+    public String[] splitExpression(String expression) {
+        List<String> tokens = new ArrayList<>();
+        String pattern = "((~+)\\w|[^\\s])";
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(expression);
+    
+        while (matcher.find()) {
+            String token = matcher.group();
+            tokens.add(token);
+        }
+    
+        // Convert the list of tokens to an array
+        String[] splittedExpression = new String[tokens.size()];
+        splittedExpression = tokens.toArray(splittedExpression);
+    
+        return splittedExpression;
+    }
+    ```
+    
+    ```java
+    public String[] splitExpression(String expression) {
+            List<String> tokens = new ArrayList<>();
+            String pattern = "((~+)\\w|[^\\s])";
+            Pattern regex = Pattern.compile(pattern);
+            Matcher matcher = regex.matcher(expression);
+    
+            while (matcher.find()) {
+                String token = matcher.group();
+                tokens.add(token);
+            }
+    
+            // Convert the list of tokens to an array
+            String[] splittedExpression = new String[tokens.size()];
+            splittedExpression = tokens.toArray(splittedExpression);
+    
+            return splittedExpression;
+        }
+    ```
+    
 - **`isOperator(char c)`**: Checks if a character is an operator.
     
     ```java
