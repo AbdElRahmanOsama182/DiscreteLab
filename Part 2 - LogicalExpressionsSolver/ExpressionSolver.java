@@ -1,8 +1,6 @@
 import java.util.HashMap;
 import java.util.Stack;
 
-import static java.lang.System.exit;
-
 interface LogicalExpressionSolver {
     /**
      * Function evaluates the expression using the given values of the user
@@ -35,11 +33,6 @@ interface LogicalExpressionSolver {
 }
 public class ExpressionSolver implements LogicalExpressionSolver
 {
-    /**
-     * Function evaluates the expression using the given values of the user
-     * @param expression : the expression input by user
-     * @return true/false, the final outcome
-     */
     public boolean evaluateExpression(Expression expression) {
         HashMap<Character, Boolean> values = expression.getValues();
         String postfix = expression.getPostfix();
@@ -76,30 +69,14 @@ public class ExpressionSolver implements LogicalExpressionSolver
         return operands.peek();
     }
 
-    /**
-     * Function checks if character is an operand
-     * @param c : character to be checked
-     * @return true if it's an operand
-     */
     public boolean isOperand(char c){
         return !(c=='~'||c=='^'||c=='v'||c=='>'||c=='('||c==')');
     }
 
-    /**
-     * Function calculates 'p implies q'
-     * @param p : first operand
-     * @param q : second operand
-     * @return the result of the implication
-     */
     public boolean implication(boolean p, boolean q){
         return ((!(p)) || q);
     }
 
-    /**
-     * check if the expression is solvable given the values of variables by the user
-     * @param expression : the given expression
-     * @return true if solvable
-     */
     public boolean isSolvable(Expression expression){
         HashMap<Character, Boolean> values = expression.getValues();
 

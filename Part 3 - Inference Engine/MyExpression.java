@@ -70,17 +70,15 @@ interface Expression {
     public String getRule();
 
     /**
-     * function takes the expression ans split it
-     * 
-     * @param expression
-     * @return splitted expression
+     * function takes the expression and split it
+     * @param expression : the expression
+     * @return split expression
      */
     public String[] splitExpression(String expression);
 
     /**
-     * function returns the splitted expression
-     * 
-     * @return the splitted expression
+     * Function returns the split expression
+     * @return the split expression
      */
     public String[] getSplittedExpression();
 }
@@ -88,7 +86,7 @@ interface Expression {
 public class MyExpression implements Expression {
     // infix representation
     private String representation;
-    // Splitted Expression
+    // Expression after splitting
     private String[] splittedExpression;
     // postfix representation
     private String postfix;
@@ -129,39 +127,18 @@ public class MyExpression implements Expression {
         this.rule = rule;
     }
 
-    /**
-     * function returns the postfix of the expression
-     * 
-     * @return the postfix representation of the expression
-     */
     public String getPostfix() {
         return this.postfix;
     }
 
-    /**
-     * function returns the infix of the expression
-     * 
-     * @return the infix representation of the expression
-     */
     public String getRepresentation() {
         return this.representation;
     }
 
-    /**
-     * function returns the splitted expression
-     * 
-     * @return the splitted expression
-     */
     public String[] getSplittedExpression() {
         return this.splittedExpression;
     }
 
-    /**
-     * function takes the expression ans split it
-     * 
-     * @param expression
-     * @return splitted expression
-     */
     public String[] splitExpression(String expression) {
         List<String> tokens = new ArrayList<>();
         String pattern = "((~+)\\w|[^\\s])";
@@ -180,31 +157,14 @@ public class MyExpression implements Expression {
         return splittedExpression;
     }
 
-    /**
-     * function returns the inference rule name
-     * 
-     * @return the inference rule name
-     */
     public String getRule() {
         return this.rule;
     }
 
-    /**
-     * Function checks if a character is operator
-     * 
-     * @param c : character
-     * @return : true if character is an operator
-     */
     public boolean isOperator(char c) {
         return (c == '~' || c == '^' || c == 'v' || c == '>' || c == '(' || c == ')');
     }
 
-    /**
-     * Function sets the infix and postfix representation of the expression,
-     * the postfix representation is needed for easier evaluation process.
-     * 
-     * @param representation : infix representation of the expression
-     */
     public void setRepresentation(String representation) {
         this.representation = representation;
 
@@ -259,29 +219,14 @@ public class MyExpression implements Expression {
         this.postfix = postfix;
     }
 
-    /**
-     * Function returns the variables' characters in the expression
-     * 
-     * @return set of variables characters
-     */
     public Set<Character> getVariables() {
         return this.variables;
     }
 
-    /**
-     * function sets the input values of the variables in the expression
-     * 
-     * @param map : the user's input values of variables
-     */
     public void setValues(HashMap<Character, Boolean> map) {
         this.values = map;
     }
 
-    /**
-     * Function to get values of variables
-     * 
-     * @return the values of variables, and returns null if the hashmap is empty
-     */
     public HashMap<Character, Boolean> getValues() {
         if (this.values.isEmpty()) {
             return null;
@@ -289,13 +234,9 @@ public class MyExpression implements Expression {
         return this.values;
     }
 
-    /**
-     * Function checks if the user's expression is valid
-     * 
-     * @return true if valid, false if invalid expression
-     */
     public boolean validateExpression() {
         String infix = this.representation;
+        /* validating via infix */
         int orig_length = infix.length();
         char last = infix.charAt(orig_length - 1);
         Stack<Character> brackets = new Stack<>();
@@ -332,6 +273,7 @@ public class MyExpression implements Expression {
         if (!brackets.empty()) {
             return false;
         }
+        /* now validating via postfix */
         String postfix = this.postfix;
         int length = postfix.length();
         int operands = 0;

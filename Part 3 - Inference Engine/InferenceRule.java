@@ -1,9 +1,25 @@
+// Interface for the inference rule
 interface InferenceRule {
+    /**
+     * This method checks if the given expressions match the rule's criteria.
+     * If a match is found, the rule is applicable.
+     * @param exp1 : first expression
+     * @param exp2 : second expression
+     * @return true if there is a match, false if there's no rules that apply it.
+     */
     boolean matches(Expression exp1, Expression exp2);
 
+    /**
+     * If a match is found, this method generates the result
+     * based on the rule's logic and the given expressions.
+     * @param exp1 : first expression
+     * @param exp2 : second expression
+     * @return the inferenced expression
+     */
     Expression apply(Expression exp1, Expression exp2);
 }
 
+// Modus ponens inference rule:
 class ModusPonensRule implements InferenceRule {
     @Override
     public boolean matches(Expression exp1, Expression exp2) {
@@ -23,6 +39,7 @@ class ModusPonensRule implements InferenceRule {
     }
 }
 
+// Modus Tollens inference rule
 class ModusTollensRule implements InferenceRule {
 
     @Override
@@ -48,6 +65,7 @@ class ModusTollensRule implements InferenceRule {
     }
 }
 
+// Hypothetical Syllogism Inference Rule
 class HypotheticalSyllogismRule implements InferenceRule {
 
     @Override
@@ -69,6 +87,7 @@ class HypotheticalSyllogismRule implements InferenceRule {
     }
 }
 
+// Disjunctive Syllogism Inference Rule
 class DisjunctiveSyllogismRule implements InferenceRule {
 
     @Override
@@ -98,7 +117,7 @@ class DisjunctiveSyllogismRule implements InferenceRule {
         return new MyExpression(result, "Disjunctive Syllogism");
     }
 }
-
+// Resolution Inference Rule
 class ResolutionRule implements InferenceRule {
 
     @Override

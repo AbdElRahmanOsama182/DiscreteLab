@@ -49,7 +49,7 @@ public class PowerSet {
                 n = in.nextInt();
             } catch (InputMismatchException e) {
                 System.out.println("Error!");
-                in.next();
+                in.nextLine();
                 n = -1;
             }
             if (n >= 64) {
@@ -76,5 +76,6 @@ public class PowerSet {
         // Part (2) Power Set (Recursive Method):
         System.out.println("Recursive Method");
         powerset.getSubsets(set, 0, 0L);
+    
     }
 }
