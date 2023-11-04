@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 interface Expression {
 
@@ -66,11 +68,28 @@ interface Expression {
      * @return the inference rule name
      */
     public String getRule();
+
+    /**
+     * function takes the expression ans split it
+     * 
+     * @param expression
+     * @return splitted expression
+     */
+    public String[] splitExpression(String expression);
+
+    /**
+     * function returns the splitted expression
+     * 
+     * @return the splitted expression
+     */
+    public String[] getSplittedExpression();
 }
 
 public class MyExpression implements Expression {
     // infix representation
     private String representation;
+    // Splitted Expression
+    private String[] splittedExpression;
     // postfix representation
     private String postfix;
     // variables' characters
@@ -92,6 +111,8 @@ public class MyExpression implements Expression {
      * @param expression : infix expression
      */
     public MyExpression(String expression) {
+        expression = expression.replaceAll(" ", "").replaceAll("~~", "");
+        this.splittedExpression = splitExpression(expression);
         setRepresentation(expression);
     }
 
@@ -102,6 +123,8 @@ public class MyExpression implements Expression {
      * @param rule       : inference rule name
      */
     public MyExpression(String expression, String rule) {
+        expression = expression.replaceAll(" ", "").replaceAll("~~", "");
+        this.splittedExpression = splitExpression(expression);
         setRepresentation(expression);
         this.rule = rule;
     }
@@ -122,6 +145,39 @@ public class MyExpression implements Expression {
      */
     public String getRepresentation() {
         return this.representation;
+    }
+
+    /**
+     * function returns the splitted expression
+     * 
+     * @return the splitted expression
+     */
+    public String[] getSplittedExpression() {
+        return this.splittedExpression;
+    }
+
+    /**
+     * function takes the expression ans split it
+     * 
+     * @param expression
+     * @return splitted expression
+     */
+    public String[] splitExpression(String expression) {
+        List<String> tokens = new ArrayList<>();
+        String pattern = "((~+)\\w|[^\\s])";
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(expression);
+
+        while (matcher.find()) {
+            String token = matcher.group();
+            tokens.add(token);
+        }
+
+        // Convert the list of tokens to an array
+        String[] splittedExpression = new String[tokens.size()];
+        splittedExpression = tokens.toArray(splittedExpression);
+
+        return splittedExpression;
     }
 
     /**

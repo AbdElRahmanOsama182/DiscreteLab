@@ -7,8 +7,8 @@ interface InferenceRule {
 class ModusPonensRule implements InferenceRule {
     @Override
     public boolean matches(Expression exp1, Expression exp2) {
-        String[] ex1 = exp1.getRepresentation().split(" ");
-        String[] ex2 = exp2.getRepresentation().split(" ");
+        String[] ex1 = exp1.getSplittedExpression();
+        String[] ex2 = exp2.getSplittedExpression();
         if (ex1.length == 3 && ex2.length == 1) {
             if (ex1[0].equals(ex2[0]) && ex1[1].equals(">"))
                 return true;
@@ -18,7 +18,7 @@ class ModusPonensRule implements InferenceRule {
 
     @Override
     public Expression apply(Expression exp1, Expression exp2) {
-        String[] ex1 = exp1.getRepresentation().split(" ");
+        String[] ex1 = exp1.getSplittedExpression();
         return new MyExpression(ex1[2], "Modus Ponens");
     }
 }
@@ -27,8 +27,8 @@ class ModusTollensRule implements InferenceRule {
 
     @Override
     public boolean matches(Expression exp1, Expression exp2) {
-        String[] ex1 = exp1.getRepresentation().split(" ");
-        String[] ex2 = exp2.getRepresentation().split(" ");
+        String[] ex1 = exp1.getSplittedExpression();
+        String[] ex2 = exp2.getSplittedExpression();
         if (ex1.length == 3 && ex2.length == 1) {
             if ((ex1[2].equals("~" + ex2[0]) || (ex2[0].equals("~" + ex1[2]))) && ex1[1].equals(">"))
                 return true;
@@ -38,7 +38,7 @@ class ModusTollensRule implements InferenceRule {
 
     @Override
     public Expression apply(Expression exp1, Expression exp2) {
-        String[] ex1 = exp1.getRepresentation().split(" ");
+        String[] ex1 = exp1.getSplittedExpression();
         String result;
         if (ex1[0].length() == 2)
             result = String.valueOf(ex1[0].charAt(1));
@@ -52,8 +52,8 @@ class HypotheticalSyllogismRule implements InferenceRule {
 
     @Override
     public boolean matches(Expression exp1, Expression exp2) {
-        String[] ex1 = exp1.getRepresentation().split(" ");
-        String[] ex2 = exp2.getRepresentation().split(" ");
+        String[] ex1 = exp1.getSplittedExpression();
+        String[] ex2 = exp2.getSplittedExpression();
         if (ex1.length == 3 && ex2.length == 3) {
             if (ex2[1].equals(">") && ex1[1].equals(">") && ex1[2].equals(ex2[0]))
                 return true;
@@ -63,8 +63,8 @@ class HypotheticalSyllogismRule implements InferenceRule {
 
     @Override
     public Expression apply(Expression exp1, Expression exp2) {
-        String[] ex1 = exp1.getRepresentation().split(" ");
-        String[] ex2 = exp2.getRepresentation().split(" ");
+        String[] ex1 = exp1.getSplittedExpression();
+        String[] ex2 = exp2.getSplittedExpression();
         return new MyExpression(ex1[0] + " > " + ex2[2], "Hypothetical Syllogism");
     }
 }
@@ -73,8 +73,8 @@ class DisjunctiveSyllogismRule implements InferenceRule {
 
     @Override
     public boolean matches(Expression exp1, Expression exp2) {
-        String[] ex1 = exp1.getRepresentation().split(" ");
-        String[] ex2 = exp2.getRepresentation().split(" ");
+        String[] ex1 = exp1.getSplittedExpression();
+        String[] ex2 = exp2.getSplittedExpression();
         if (ex1.length == 3 && ex2.length == 1) {
             if (ex1[1].equals("v")) {
                 if (ex1[0].equals("~" + ex2[0]) || ex2[0].equals("~" + ex1[0]))
@@ -88,8 +88,8 @@ class DisjunctiveSyllogismRule implements InferenceRule {
 
     @Override
     public Expression apply(Expression exp1, Expression exp2) {
-        String[] ex1 = exp1.getRepresentation().split(" ");
-        String[] ex2 = exp2.getRepresentation().split(" ");
+        String[] ex1 = exp1.getSplittedExpression();
+        String[] ex2 = exp2.getSplittedExpression();
         String result;
         if (ex1[0].equals("~" + ex2[0]) || ex2[0].equals("~" + ex1[0]))
             result = ex1[2];
@@ -103,8 +103,8 @@ class ResolutionRule implements InferenceRule {
 
     @Override
     public boolean matches(Expression exp1, Expression exp2) {
-        String[] ex1 = exp1.getRepresentation().split(" ");
-        String[] ex2 = exp2.getRepresentation().split(" ");
+        String[] ex1 = exp1.getSplittedExpression();
+        String[] ex2 = exp2.getSplittedExpression();
         if (ex1.length == 3 && ex2.length == 3) {
             if (ex1[1].equals("v") && ex2[1].equals("v")) {
                 if (ex1[0].equals("~" + ex2[0]) || ex2[0].equals("~" + ex1[0]))
@@ -122,8 +122,8 @@ class ResolutionRule implements InferenceRule {
 
     @Override
     public Expression apply(Expression exp1, Expression exp2) {
-        String[] ex1 = exp1.getRepresentation().split(" ");
-        String[] ex2 = exp2.getRepresentation().split(" ");
+        String[] ex1 = exp1.getSplittedExpression();
+        String[] ex2 = exp2.getSplittedExpression();
         String result;
         if (ex1[0].equals("~" + ex2[0]) || ex2[0].equals("~" + ex1[0]))
             result = ex1[2] + " v " + ex2[2];
