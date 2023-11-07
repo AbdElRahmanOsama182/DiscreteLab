@@ -495,3 +495,6 @@ The **`Main`** class serves as the main program that utilizes the inference engi
 ## **Extending the Program**
 
 You can extend the program by adding more custom rules and expressions as needed. The provided code serves as a foundation for building a more comprehensive inference engine for logical expressions.
+
+## **Usages**
+You can find some test cases for the inference engine program in [this directory.](/Part%203%20-%20Inference%20Engine/test_cases/)

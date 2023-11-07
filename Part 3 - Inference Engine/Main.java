@@ -40,7 +40,7 @@ public class Main {
         if (result != null) {
             System.out.println(result.getRepresentation() + " (" + result.getRule() + ")");
         } else {
-            System.out.println("The input expression cannot be inferred");
+            System.out.println("The input expressions cannot be inferred");
         }
     }
 }
