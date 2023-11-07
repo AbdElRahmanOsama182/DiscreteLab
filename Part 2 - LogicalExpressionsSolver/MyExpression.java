@@ -254,8 +254,9 @@ public class MyExpression implements Expression {
                     brackets.pop();
                 else
                     brackets.push(curr);
-            } else if (isOperator(curr) && isOperator(infix.charAt(i + 1)) && infix.charAt(i + 1) != '~') {
-                return false;
+            } else if (isOperator(curr) && isOperator(infix.charAt(i + 1))) {
+                if (infix.charAt(i + 1) != '~' && infix.charAt(i + 1)!='(')
+                    return false;
             } else if (!isOperator(curr) && !isOperator(infix.charAt(i + 1))) {
                 return false;
             }
