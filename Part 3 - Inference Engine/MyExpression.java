@@ -246,6 +246,8 @@ public class MyExpression implements Expression {
         for (int i = 0; i < orig_length - 1; i++) {
             char curr = infix.charAt(i);
             if (curr == '(') {
+                if (infix.charAt(i + 1) == ')') // case "()"
+                    return false;
                 brackets.push(curr);
             } else if (curr == ')') {
                 if (brackets.empty())
