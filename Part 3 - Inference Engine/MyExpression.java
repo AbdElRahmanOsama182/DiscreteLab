@@ -243,9 +243,15 @@ public class MyExpression implements Expression {
         if (isOperator(last) && last != ')') {
             return false;
         }
+        if (!isOperator(last) && !Character.isAlphabetic(last))
+            return false;
         for (int i = 0; i < orig_length - 1; i++) {
             char curr = infix.charAt(i);
-            if (curr == '(') {
+            if (!isOperator(curr) && !Character.isAlphabetic(curr)) {
+                // if the operand is not an alphabetic character
+                return false;
+            }
+            else if (curr == '(') {
                 if (infix.charAt(i + 1) == ')') // case "()"
                     return false;
                 brackets.push(curr);

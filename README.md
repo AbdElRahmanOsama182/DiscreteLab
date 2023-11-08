@@ -246,7 +246,7 @@ public String getPostfix() {
 - **`validateExpression()`**: Checks if the user’s expression is valid.
     
 ```java
- public boolean validateExpression() {
+    public boolean validateExpression() {
         String infix = this.representation;
         /* validating via infix */
         int orig_length = infix.length();
@@ -255,9 +255,15 @@ public String getPostfix() {
         if (isOperator(last) && last != ')') {
             return false;
         }
+        if (!isOperator(last) && !Character.isAlphabetic(last))
+            return false;
         for (int i = 0; i < orig_length - 1; i++) {
             char curr = infix.charAt(i);
-            if (curr == '(') {
+            if (!isOperator(curr) && !Character.isAlphabetic(curr)) {
+                // if the operand is not an alphabetic character
+                return false;
+            }
+            else if (curr == '(') {
                 if (infix.charAt(i + 1) == ')') // case "()"
                     return false;
                 brackets.push(curr);
@@ -367,17 +373,31 @@ This class implements the **`LogicalExpressionSolver`** interface and provides m
 ```
     
 - **`implication(boolean p, boolean q)`**: Calculates the implication “p implies q.”
-    
-    ```java
-    public boolean implication(boolean p, boolean q){        return ((!(p)) || q);}
-    ```
-    
-- **`isSolvable(Expression expression)`**: Checks if the expression is solvable given the values of variables provided by the user.
-    
+
 ```java
     public boolean implication(boolean p, boolean q){
         return ((!(p)) || q);
     }
+``` 
+
+- **`isSolvable(Expression expression)`**: Checks if the expression is solvable given the values of variables provided by the user.
+    
+```java
+public boolean isSolvable(Expression expression){
+    HashMap<Character, Boolean> values = expression.getValues();
+
+    // if the expression is not given values
+    if (values == null){
+        System.out.println("Error! expression is not given values.");
+        return false;
+    }
+    // check if number of given values = number of variables
+    if (values.size() != expression.getVariables().size()) {
+        System.out.println("The given values are not sufficient to evaluate the expression.");
+        return false;
+    }
+    return true;
+}
 ```
     
 
