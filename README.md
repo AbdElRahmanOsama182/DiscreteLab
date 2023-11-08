@@ -15,15 +15,20 @@ The program allows you to input the size of the array and the array elements. It
 The iterative method uses bit masking to generate all possible subsets of the input set.
 
 ```java
-// Part (1) Power Set (Iterative Method):System.out.println("Iterative Method");for (long i = 0; i <= finish; i++) {        powerset.printSubset(set, i);}
-```
+// Part (1) Power Set (Iterative Method):
+System.out.println("Iterative Method");
+for (long i = 0; i <= finish; i++) {
+    powerset.printSubset(set, i);
+}
 
 ### **Recursive Method**
 
 The recursive method also uses bit masking but employs a recursive function to generate the power set.
 
 ```java
-// Part (2) Power Set (Recursive Method):System.out.println("Recursive Method");powerset.getSubsets(set, 0, 0L);
+// Part (2) Power Set (Recursive Method):
+System.out.println("Recursive Method");
+powerset.getSubsets(set, 0, 0L);
 ```
 
 ## **Methods**
@@ -31,13 +36,41 @@ The recursive method also uses bit masking but employs a recursive function to g
 - **`printSubset(String[] set, long subset)`**: Prints a subset of the input set given a bitmask.
     
     ```java
-    public void printSubset(String[] set, long subset) {    int size = bitCount(subset);    // counting number of elements to break early from the nested loop    int curr_size = 0;    System.out.print("[");    for (int i = 0; i < set.length; i++) {        if (((subset) & (1L << i)) != 0) {            System.out.print(set[i]);            curr_size++;            if (curr_size == size) {                System.out.println("]");                break;            } else {                System.out.print(", ");            }        }    }    // in case of empty subset    if (curr_size == 0) {        System.out.println("]");    }}
+public void printSubset(String[] set, long subset) {
+    int size = bitCount(subset);
+    // counting number of elements to break early from the nested loop
+    int curr_size = 0;
+    System.out.print("[");
+    for (int i = 0; i < set.length; i++) {
+        if (((subset) & (1L << i)) != 0) {
+            System.out.print(set[i]);
+            curr_size++;
+            if (curr_size == size) {
+                System.out.println("]");
+                break;
+            } else {
+                System.out.print(", ");
+            }
+        }
+    }
+    // in case of an empty subset
+    if (curr_size == 0) {
+        System.out.println("]");
+    }
+}
     ```
     
 - **`getSubsets(String[] set, int index, long subset)`**: Recursively generates and prints the power set of the input set.
     
     ```java
-    public void getSubsets(String[] set, int index, long subset) {    if (index == set.length) {        printSubset(set, subset);    } else {        getSubsets(set, index + 1, subset << 1);        getSubsets(set, index + 1, (subset << 1) | 1L);    }}
+public void getSubsets(String[] set, int index, long subset) {
+    if (index == set.length) {
+        printSubset(set, subset);
+    } else {
+        getSubsets(set, index + 1, subset << 1);
+        getSubsets(set, index + 1, (subset << 1) | 1L);
+    }
+}
     ```
     
 
